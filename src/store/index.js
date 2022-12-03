@@ -1,14 +1,26 @@
-import { createStore } from 'vuex'
+import { createStore } from 'vuex';
+import socket from '@/helpers/socket';
+
 
 export default createStore({
   state: {
+    messages: []
   },
   getters: {
-  },
-  mutations: {
+    getMessages: state => state.messages
   },
   actions: {
+    fetchMessages({commit}, data){
+      socket.emit('message', data)
+      commit('newMessages', data)
+    }
   },
-  modules: {
-  }
+  mutations: {
+    newMessages(state, payload){
+      state.messages = state.messages.concat(payload)
+    },
+    setNewMessage(state, payload){
+      state.messages = state.messages.concat(payload)
+    }
+  },
 })
